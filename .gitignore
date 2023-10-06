@@ -3,3 +3,5 @@ dist/*
 .clang-format
 .editorconfig
 .DS_Store
+.idea
+Makefile
