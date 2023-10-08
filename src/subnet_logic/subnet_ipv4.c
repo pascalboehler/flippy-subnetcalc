@@ -6,8 +6,8 @@
 #define OCTETS_AVAILABLE 4
 #define TESTSUBNET 28
 
-void calculate_decimal_mask(int cidr_id) {
-    short octetsDec[OCTETS_AVAILABLE];
+short* calculate_decimal_mask(int cidr_id) {
+    short* octetsDec = (short*)malloc(sizeof(short[OCTETS_AVAILABLE]));
 
     int networkBitsAvailable = cidr_id;
 
@@ -19,8 +19,9 @@ void calculate_decimal_mask(int cidr_id) {
             octetsDec[i] = 0 + (1 << 8) - (1 << (8 - networkBitsAvailable));
             networkBitsAvailable = 0;
         }
-        printf("%d\n", octetsDec[i]);
+        //printf("%d\n", octetsDec[i]);
     }
+    return octetsDec;
 }
 
 // TODO: Understand this code and its values
@@ -41,12 +42,28 @@ int calculate_cidr_id(u_int8_t octets[4]) {
     return count;
 }
 
+int calculate_hosts_available(int cidr) {
+    short* octets = calculate_decimal_mask(cidr);
+    int hosts_available = 1;
+
+    for(int i = 0; i < OCTETS_AVAILABLE; i++) {
+        int hosts = (256 - octets[i]);
+        if(hosts == 0)
+            continue;
+        else
+            hosts_available *= hosts;
+    }
+    free(octets);
+    return hosts_available - 2;
+}
+
 int main() {
     u_int8_t octets[4];
     octets[0] = 255;
     octets[1] = 255;
     octets[2] = 240;
     octets[3] = 0;
-
-    printf("%i\n", calculate_cidr_id(octets));
+    int cidr = calculate_cidr_id(octets);
+    printf("CIDR Notation: %i\n", cidr);
+    printf("Hosts available: %i\n", calculate_hosts_available(cidr));
 }
