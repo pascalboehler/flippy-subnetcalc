@@ -6,10 +6,10 @@
 #define OCTETS_AVAILABLE 4
 #define TESTSUBNET 28
 
-void calculate_decimal_mask(int subnetid) {
+void calculate_decimal_mask(int cidr_id) {
     short octetsDec[OCTETS_AVAILABLE];
 
-    int networkBitsAvailable = subnetid;
+    int networkBitsAvailable = cidr_id;
 
     for(int i = 0; i < OCTETS_AVAILABLE; i++) {
         if((networkBitsAvailable - 8) > 0) {
@@ -33,7 +33,7 @@ int count_one(int x) {
     return x;
 }
 
-int calculate_subnet_id(u_int8_t octets[4]) {
+int calculate_cidr_id(u_int8_t octets[4]) {
     u_int8_t count = 0;
     for(int i = 0; i < 4; i++) {
         count += count_one(octets[i]);
@@ -48,5 +48,5 @@ int main() {
     octets[2] = 240;
     octets[3] = 0;
 
-    printf("%i\n", calculate_subnet_id(octets));
+    printf("%i\n", calculate_cidr_id(octets));
 }
