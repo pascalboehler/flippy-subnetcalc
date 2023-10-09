@@ -131,6 +131,13 @@ short * calculate_first_ip_in_network(short * network, int cidr) {
     return ip;
 }
 
+/**
+ * calculate_broadcast_ip_in_network
+ * Calculate the Broadcast IP from a given network (assuming its the last avaulable)
+ * @param: short * network, int cidr 
+ * @return: short *
+ */
+
 short * calculate_broadcast_ip_in_network(short * network, int cidr) {
     if (cidr == 32)
         return network;
