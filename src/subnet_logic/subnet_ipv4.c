@@ -4,6 +4,13 @@
 #define OCTETS_AVAILABLE 4
 #define HOSTS_PER_OCTET 256 
 
+/** 
+ * calculate_decimal_mask
+ * Calculates subnet mask from cidr notation 
+ * @param: int cidr 
+ * @return: short *
+ */
+
 short* calculate_decimal_mask(int cidr_id) {
     short* octetsDec = (short*)malloc(sizeof(short[OCTETS_AVAILABLE]));
 
@@ -23,6 +30,14 @@ short* calculate_decimal_mask(int cidr_id) {
 }
 
 // TODO: Understand this code and its values
+
+/**
+ * count_one 
+ * Counts all bits that are 1 in a number (bit counting)
+ * @param: int x 
+ * @return: int 
+ */
+
 int count_one(int x) {
     x = (x & (0x55555555)) + ((x >> 1) & (0x55555555));
     x = (x & (0x33333333)) + ((x >> 2) & (0x33333333));
@@ -102,6 +117,8 @@ short * calculate_ip_network_from_mask(short * octets, short * ip) {
     }
     return network;
 }
+
+/** Entry points for debugging */
 
 int main() {
     short * octets = (short *) malloc(sizeof(short[4]));
