@@ -1,4 +1,5 @@
 #include "subnet_ipv4.h"
+#include <sys/_types/_u_int32_t.h>
 #include <sys/_types/_u_int8_t.h>
 
 #define OCTETS_AVAILABLE 4
@@ -24,7 +25,6 @@ short* calculate_decimal_mask(int cidr_id) {
             octetsDec[i] = 0 + (1 << 8) - (1 << (8 - networkBitsAvailable));
             networkBitsAvailable = 0;
         }
-        //printf("%d\n", octetsDec[i]);
     }
     return octetsDec;
 }
@@ -95,12 +95,40 @@ int calculate_hosts_available(int cidr) {
 short * calculate_x_ip_in_network(short * network, int cidr, int xIp) {
     if (xIp > calculate_hosts_available(cidr))
         return NULL;
-    
-    for (int i = 0; i < OCTETS_AVAILABLE; i++) {
+   
+    u_int32_t maskInBit = 0;
 
+    maskInBit += network[0] << 16;
+    maskInBit += network[1] << 8;
+    maskInBit += network[2] << 0;
+
+    printf("%i\n", maskInBit);
+
+    for (int i = 0; i < OCTETS_AVAILABLE; i++) {
+        // FIXME: help! Figure out bitshifting and conversion et al.
     } 
     
     return NULL;
+}
+
+/**
+ * calculate_first_ip_in_network
+ *
+ * @param: short * network
+ * @
+ */
+
+short * calculate_first_ip_in_network(short * network, int cidr) {
+    if (cidr == 23)
+        return network; 
+
+    short * ip = (short *) malloc(sizeof(short[4]));
+
+    memcpy(ip, network, sizeof(short[4]));
+
+    ip[3] = ip[3] + 1;
+
+    return ip;
 }
 
 /**
@@ -144,14 +172,18 @@ int main() {
 
     int help = (0 & 128);
 
+    short * firstIP = calculate_first_ip_in_network(network, cidr);
+
     printf("IP: %i.%i.%i.%i\n", ip[0], ip[1], ip[2], ip[3]);
     printf("Network: %i.%i.%i.%i\n", network[0], network[1], network[2], network[3]);
     printf("Subnetmask: %i.%i.%i.%i\n", octets[0], octets[1], octets[2], octets[3]);
     printf("CIDR Notation: %i\n", cidr);
     printf("Hosts available: %i\n", calculate_hosts_available(cidr));
-    
+    printf("1st IP in Network: %i.%i.%i.%i\n", firstIP[0], firstIP[1], firstIP[2], firstIP[3]);
+
     calculate_x_ip_in_network(network, cidr, 1);
 
     free(octets);
     free(network);
+    free(firstIP);
 }
