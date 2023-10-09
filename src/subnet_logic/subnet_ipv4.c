@@ -119,7 +119,7 @@ short * calculate_x_ip_in_network(short * network, int cidr, int xIp) {
  */
 
 short * calculate_first_ip_in_network(short * network, int cidr) {
-    if (cidr == 23)
+    if (cidr == 32)
         return network; 
 
     short * ip = (short *) malloc(sizeof(short[4]));
@@ -127,6 +127,18 @@ short * calculate_first_ip_in_network(short * network, int cidr) {
     memcpy(ip, network, sizeof(short[4]));
 
     ip[3] = ip[3] + 1;
+
+    return ip;
+}
+
+short * calculate_broadcast_ip_in_network(short * network, int cidr) {
+    if (cidr == 32)
+        return network;
+
+    short * ip = (short *) malloc(sizeof(short[4]));
+
+    memcpy(ip, network, sizeof(short[4]));
+
 
     return ip;
 }
@@ -174,12 +186,15 @@ int main() {
 
     short * firstIP = calculate_first_ip_in_network(network, cidr);
 
+    short * lastIP = calculate_first_ip_in_network(network, cidr);
+
     printf("IP: %i.%i.%i.%i\n", ip[0], ip[1], ip[2], ip[3]);
     printf("Network: %i.%i.%i.%i\n", network[0], network[1], network[2], network[3]);
     printf("Subnetmask: %i.%i.%i.%i\n", octets[0], octets[1], octets[2], octets[3]);
     printf("CIDR Notation: %i\n", cidr);
     printf("Hosts available: %i\n", calculate_hosts_available(cidr));
-    printf("1st IP in Network: %i.%i.%i.%i\n", firstIP[0], firstIP[1], firstIP[2], firstIP[3]);
+    printf("First IP: %i.%i.%i.%i\n", firstIP[0], firstIP[1], firstIP[2], firstIP[3]);
+    printf("Broadcast IP: %i.%i.%i.%i\n", lastIP[0], lastIP[1], lastIP[2], lastIP[3]);
 
     calculate_x_ip_in_network(network, cidr, 1);
 
