@@ -32,6 +32,13 @@ int count_one(int x) {
     return x;
 }
 
+/**
+ * calculate_cidr_id 
+ * Calculates the cidr network id from a subnet mask 
+ * @param: u_int8_t octets[4]
+ * @return: int 
+ */
+
 int calculate_cidr_id(u_int8_t octets[4]) {
     u_int8_t count = 0;
     for(int i = 0; i < 4; i++) {
@@ -39,6 +46,13 @@ int calculate_cidr_id(u_int8_t octets[4]) {
     }
     return count;
 }
+
+/**
+ * calculate_hosts_available 
+ * Calculate the number of available
+ * @param: int cidr 
+ * @return: int 
+ */
 
 int calculate_hosts_available(int cidr) {
     short* octets = calculate_decimal_mask(cidr);
@@ -55,11 +69,28 @@ int calculate_hosts_available(int cidr) {
     return hosts_available - 2;
 }
 
-void calculate_x_ip_in_network(short * network, int cidr, int xIp) {
+/**
+*   calculate_x_ip_in_network
+*   return IP Addr
+*   @param: short * network, int cidr, int xIp
+*   @return: short *
+*/
+
+short * calculate_x_ip_in_network(short * network, int cidr, int xIp) {
+    if (xIp > calculate_hosts_available(cidr))
+        return NULL;
     for (int i = 0; i < OCTETS_AVAILABLE; i++) {
-        printf("%i\n", network[i]);
+
     } 
+    return NULL;
 }
+
+/**
+*   calculate_ip_network_from_mask
+*   Calculates the IP Network representation from a given subnet mask 
+*   @param: short * octets, short * ip 
+*   @return: short *
+*/
 
 short * calculate_ip_network_from_mask(short * octets, short * ip) {
     short * network = (short *) malloc(sizeof(short[OCTETS_AVAILABLE]));
@@ -78,6 +109,7 @@ int main() {
     octets[1] = 255;
     octets[2] = 255;
     octets[3] = 0;
+    
     int cidr = calculate_cidr_id(octets);
 
     short ip[4];
@@ -90,7 +122,7 @@ int main() {
 
     int help = (0 & 128);
 
-    printf("IP: %i\n", help);
+    printf("IP: %i.%i.%i.%i\n", ip[0], ip[1], ip[2], ip[3]);
     printf("Network: %i.%i.%i.%i\n", network[0], network[1], network[2], network[3]);
     printf("Subnetmask: %i.%i.%i.%i\n", octets[0], octets[1], octets[2], octets[3]);
     printf("CIDR Notation: %i\n", cidr);

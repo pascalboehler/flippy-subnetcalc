@@ -7,6 +7,6 @@
 
 short* calculate_decimal_mask(int subnetid);
 int calculate_subnet_id(u_int8_t octets[4]);
-void calculate_x_ip_in_network(short * network, int cidr, int xIp);
+short* calculate_x_ip_in_network(short * network, int cidr, int xIp);
 
 #endif
