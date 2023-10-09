@@ -80,6 +80,7 @@ int calculate_hosts_available(int cidr) {
         else
             hosts_available *= hosts;
     }
+
     free(octets);
     return hosts_available - 2;
 }
@@ -94,9 +95,11 @@ int calculate_hosts_available(int cidr) {
 short * calculate_x_ip_in_network(short * network, int cidr, int xIp) {
     if (xIp > calculate_hosts_available(cidr))
         return NULL;
+    
     for (int i = 0; i < OCTETS_AVAILABLE; i++) {
 
     } 
+    
     return NULL;
 }
 
@@ -109,12 +112,14 @@ short * calculate_x_ip_in_network(short * network, int cidr, int xIp) {
 
 short * calculate_ip_network_from_mask(short * octets, short * ip) {
     short * network = (short *) malloc(sizeof(short[OCTETS_AVAILABLE]));
+    
     for (int i = 0; i < OCTETS_AVAILABLE; i++) {
         short ipPart = ip[i];
         short octetPart = octets[i];
         short networkPart = (ipPart & octetPart);
         network[i] = networkPart;
     }
+    
     return network;
 }
 
